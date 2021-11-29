@@ -11,3 +11,11 @@ class Person(models.Model):
     category = models.CharField(max_length=8,
                                 choices=CATEGORY_CHOICES,
                                 default="Patient")
+
+
+class Rdv (models.Model):
+    date = models.DateTimeField()
+    type = models.CharField(max_length=200)
+    duration = models.IntegerField()
+    doctor = models.ForeignKey(Person, null=True, related_name='doctor')
+    patient = models.ForeignKey(Person, null=True, related_name='patient')
