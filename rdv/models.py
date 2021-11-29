@@ -17,5 +17,5 @@ class Rdv (models.Model):
     date = models.DateTimeField()
     type = models.CharField(max_length=200)
     duration = models.IntegerField()
-    doctor = models.ForeignKey(Person, null=True, on_delete=models.CASCADE,related_name='doctor')
+    doctor = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='doctor')
     patient = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='patient')
