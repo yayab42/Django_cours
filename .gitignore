@@ -2,6 +2,9 @@ venv
 db.sqlite3
 polls
 myvenv
+.idea/
+Django_cours/
+__pycache__/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/linux,macos,windows,django,pycharm
