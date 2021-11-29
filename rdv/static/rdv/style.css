@@ -1,7 +1,12 @@
-input{
+input, select{
     border: solid 3px blue;
     padding: 10px 20px;
     border-radius: 10px
+}
+
+label{
+    font-size: 1.2em;
+    font-weight: bold;
 }
 
 button{
@@ -9,6 +14,7 @@ button{
     background-color: green;
     color: white;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 button:hover{
@@ -17,4 +23,14 @@ button:hover{
     color: green;
     border: solid 3px green;
     border-radius: 5px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.form-control{
+    margin: 10px 0;
 }

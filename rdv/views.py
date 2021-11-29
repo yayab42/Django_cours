@@ -4,14 +4,22 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+
+from rdv.forms import RdvForm
 
 
 @login_required()
 def index(request):
-    today = datetime.datetime.now()
-    context = {}
+    if request.method == 'POST':
+        form = RdvForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('approved')
+    else:
+        form = RdvForm()
+    context = {'form': form}
     return render(request, 'rdv/index.html', context)
 
 
@@ -36,3 +44,8 @@ class LogoutView(TemplateView):
     def get(self, request, **kwargs):
         logout(request)
         return HttpResponseRedirect('registration/login.html')
+
+
+def approved(request):
+    context = {}
+    return render(request, 'rdv/approved.html', context)
