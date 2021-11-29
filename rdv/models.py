@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 
 
 class Person(models.Model):
+    def __str__(self):
+        return self.user.username
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     CATEGORY_CHOICES = (
         ("MEDECIN", "Medecin"),
@@ -14,6 +16,8 @@ class Person(models.Model):
 
 
 class Rdv (models.Model):
+    def __str__(self):
+        return self.date
     date = models.DateTimeField()
     type = models.CharField(max_length=200)
     duration = models.IntegerField()
