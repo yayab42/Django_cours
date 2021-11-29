@@ -1,0 +1,24 @@
+input{
+    border: solid 3px blue;
+    padding: 10px 20px;
+    border-radius: 10px
+}
+
+p{
+    color: red;
+}
+
+button{
+    padding: 5px 10px;
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+}
+
+button:hover{
+    padding: 5px 10px;
+    background-color: white;
+    color: green;
+    border: solid 3px green;
+    border-radius: 5px;
+}
