@@ -3,4 +3,6 @@ db.sqlite3
 polls
 .DS_Store
 myvenv
+/Django_cours
 .idea
+
