@@ -2,5 +2,9 @@
 <link rel="stylesheet" type="text/css" href="{% static 'rdv/style.css' %}">
 
 
-<p>Vous êtes identifié!</p>
+<h1>Bonjour {{request.user.username}} </h1>
+
+<p>Vous allez ici pouvoir prendre rendez-vous pour votre 3ème doses du vaccin contre la COVID-19</p>
+
+
 <p><a href="/logout/">Sortir</a></p>

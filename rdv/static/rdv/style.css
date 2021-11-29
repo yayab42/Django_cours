@@ -4,10 +4,6 @@ input{
     border-radius: 10px
 }
 
-p{
-    color: red;
-}
-
 button{
     padding: 5px 10px;
     background-color: green;
