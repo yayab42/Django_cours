@@ -17,7 +17,7 @@ class Person(models.Model):
 
 class Rdv (models.Model):
     def __str__(self):
-        return self.date
+        return str(self.date)
     date = models.DateTimeField()
     TYPE_CHOICES = (
         ("RDV SIMPLE", "Rdv simple"),
