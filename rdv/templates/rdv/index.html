@@ -3,25 +3,24 @@
 {% block content %}
 {% load static %}
 
-<h1>Bonjour {{request.user.username}} </h1>
+<div class="container">
+    <h1>Bonjour {{request.user.username}} </h1>
 
-<p>Vous allez ici pouvoir prendre rendez-vous pour votre 3ème doses du vaccin contre la COVID-19</p>
+    <p>Vous allez ici pouvoir prendre rendez-vous pour votre 3ème doses du vaccin contre la COVID-19</p>
 
+    <form action="{% url 'index' %}" method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-control">
+                        {{field.label_tag}}
+                        {{field}}
+                    </div>
+                {% endfor %}
+        <button type="submit" style="width:100px;">ENVOYER</button>
+    </form>
 
+    <a href="/logout/" class="text-danger font-weight-bold mt-5 pt-5 ">Sortir</a>
+</div>
 
-
-
-<form action="{% url 'index' %}" method="post">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="form-control">
-                    {{field.label_tag}}
-                    {{field}}
-                </div>
-            {% endfor %}
-    <button type="submit" style="width:100px;">ENVOYER</button>
-</form>
-
-<p><a href="/logout/">Sortir</a></p>
 
 {% endblock content %}
