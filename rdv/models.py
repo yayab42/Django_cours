@@ -15,16 +15,13 @@ class Person(models.Model):
                                 default="Patient")
 
 
-class Rdv (models.Model):
-    def __str__(self):
-        return str(self.date)
-    date = models.DateTimeField()
+class TypeRdv(models.Model):
     TYPE_CHOICES = (
         ("RDV SIMPLE", "Rdv simple"),
         ("RDV  SPECIALISTE", "Rdv spécialiste"),
         ("RDV AVEC MANIPULATION", "Rdv avec manipulation")
     )
-    type = models.CharField(max_length=50,
+    name = models.CharField(max_length=50,
                             choices=TYPE_CHOICES,
                             default="Rdv simple")
     DURATION_CHOICES = (
@@ -33,5 +30,16 @@ class Rdv (models.Model):
         (55, "55 min"),
     )
     duration = models.IntegerField(choices=DURATION_CHOICES)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class Rdv (models.Model):
+    date = models.DateTimeField()
+    type = models.ForeignKey(TypeRdv, null=True, on_delete=models.CASCADE, related_name='type')
     doctor = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='doctor')
     patient = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='patient')
+
+    def __str__(self):
+        return str(self.date)
