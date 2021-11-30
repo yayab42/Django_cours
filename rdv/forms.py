@@ -9,4 +9,6 @@ class RdvForm(ModelForm):
 
     class Meta:
         model = Rdv
-        field = ['doctor', 'start']
+        fields = ['start', 'doctor']
+        exclude = ['type']
+
