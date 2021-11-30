@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from datetime import datetime, timedelta
 
 
 class Person(models.Model):
@@ -37,20 +39,34 @@ class TypeRdv(models.Model):
 
 
 class Rdv(models.Model):
-    date = models.DateTimeField()
     type = models.ForeignKey(TypeRdv, null=True, on_delete=models.CASCADE, related_name='type')
     doctor = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='doctor')
     patient = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='patient')
+    start = models.DateTimeField(default=datetime.now, help_text="Jour et heure du rendez-vous")
+    end = models.DateTimeField(default=datetime.now, help_text="Fin du rendez-vous")
+
+    def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
+        overlap = False
+        if new_start == fixed_end or new_end == fixed_start:
+            overlap = False
+        elif (fixed_start <= new_start <= fixed_end) or (fixed_start <= new_end <= fixed_end):
+            overlap = True
+        elif new_start <= fixed_start and new_end >= fixed_end:
+            overlap = True
+
+        return overlap
+
+    def clean(self):
+        if self.end <= self.start:
+            raise ValidationError("L'heure de début doit être inférieure à l'heure de fin")
+
+        events = Rdv.objects.filter(start=self.start)
+        if events.exists():
+            for event in events:
+                if self.check_overlap(event.start_time, event.end_time, self.start, self.end):
+                    raise ValidationError(
+                        'Il y a déjà un rendez vous à : ' + str(event.day) + ', ' + str(
+                            event.start_time) + '-' + str(event.end_time))
 
     def __str__(self):
-        return str(self.date)
-
-
-class Event(models.Model):
-
-    day = models.DateTimeField('Jour du rendez-vous', help_text="Jour du rendez-vous")
-    start = models.TimeField('Heure du rendez-vous', help_text="Heure du rendez-vous")
-    end = models.TimeField('Heure du fin', help_text="Heure de fin")
-
-    def __str__(self):
-        return str(self)
+        return str(self.start)
