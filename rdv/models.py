@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class Person(models.Model):
     def __str__(self):
         return self.user.username
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     CATEGORY_CHOICES = (
         ("MEDECIN", "Medecin"),
@@ -35,7 +36,7 @@ class TypeRdv(models.Model):
         return str(self.name)
 
 
-class Rdv (models.Model):
+class Rdv(models.Model):
     date = models.DateTimeField()
     type = models.ForeignKey(TypeRdv, null=True, on_delete=models.CASCADE, related_name='type')
     doctor = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='doctor')
@@ -43,3 +44,13 @@ class Rdv (models.Model):
 
     def __str__(self):
         return str(self.date)
+
+
+class Event(models.Model):
+
+    day = models.DateTimeField('Jour du rendez-vous', help_text="Jour du rendez-vous")
+    start = models.TimeField('Heure du rendez-vous', help_text="Heure du rendez-vous")
+    end = models.TimeField('Heure du fin', help_text="Heure de fin")
+
+    def __str__(self):
+        return str(self)
