@@ -33,4 +33,12 @@ form{
 
 .form-control{
     margin: 10px 0;
+    border: none;
+}
+
+.flex-login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

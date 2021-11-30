@@ -1,10 +1,20 @@
+{% extends "rdv/base.html" %}
+
+{% block content %}
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'rdv/style.css' %}">
+<div class="flex-login">
+    <form method="post"  role="form" action="/">
+        {% csrf_token %}
+        <div class="form-control">
+            <input type="text" name="username" placeholder="Utilisateur">
+        </div>
+        <div class="form-control">
+            <input type="password" name="password" placeholder="Mot de passe">
+        </div>
+        <button type="submit" value="login" >Se Connecter</button>
+    </form>
+</div>
 
-<form method="post"  role="form" action="/">
-{% csrf_token %}
-<input type="text" name="username" placeholder="Utilisateur">
-<input type="password" name="password" placeholder="Mot de passe">
-<button type="submit" value="login" >Se Connecter</button>
-</form>
+
+{% endblock content %}

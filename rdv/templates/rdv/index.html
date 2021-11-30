@@ -1,6 +1,7 @@
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'rdv/style.css' %}">
+{% extends "rdv/base.html" %}
 
+{% block content %}
+{% load static %}
 
 <h1>Bonjour {{request.user.username}} </h1>
 
@@ -22,3 +23,5 @@
 </form>
 
 <p><a href="/logout/">Sortir</a></p>
+
+{% endblock content %}
