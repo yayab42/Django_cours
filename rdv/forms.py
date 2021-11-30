@@ -9,4 +9,4 @@ class RdvForm(ModelForm):
 
     class Meta:
         model = Rdv
-        fields = ['date', 'doctor', 'type']
+        fields = ['doctor']

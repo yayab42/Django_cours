@@ -4,9 +4,9 @@
 {% load static %}
 
 <div class="container">
-    <h1>Bonjour {{request.user.username}} </h1>
+    <h1 class="text-capitalize">Bonjour {{request.user.username}} </h1>
 
-    <p>Vous allez ici pouvoir prendre rendez-vous pour votre 3ème doses du vaccin contre la COVID-19</p>
+    <p>Vous allez ici pouvoir prendre rendez-vous pour être vaccined contre la COVID-19</p>
 
     <form action="{% url 'index' %}" method="post">
                 {% csrf_token %}
@@ -19,7 +19,7 @@
         <button type="submit" style="width:100px;">ENVOYER</button>
     </form>
 
-    <a href="/logout/" class="text-danger font-weight-bold mt-5 pt-5 ">Sortir</a>
+    <a class="text-danger" href="/logout/" class="text-danger">Sortir</a>
 </div>
 
 
