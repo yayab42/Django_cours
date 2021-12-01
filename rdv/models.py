@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from datetime import datetime
+import pytz
 
 
 # class Person(models.Model):
@@ -53,7 +54,6 @@ class Doctor(models.Model):
 
 
 class Rdv(models.Model):
-    type = models.ForeignKey(TypeRdv, null=True, on_delete=models.CASCADE, related_name='type')
     doctor = models.ForeignKey(Doctor, null=True, on_delete=models.CASCADE, related_name='doctor')
     patient = models.ForeignKey(Patient, null=True, on_delete=models.CASCADE, related_name='patient')
     start = models.DateTimeField(default=datetime.now, help_text="Jour et heure du rendez-vous")
@@ -71,7 +71,8 @@ class Rdv(models.Model):
         return overlap
 
     def clean(self):
-        if self.end <= self.start:
+        utc = pytz.UTC
+        if utc.localize(self.end) <= self.start:
             raise ValidationError("L'heure de début doit être inférieure à l'heure de fin")
 
         events = Rdv.objects.filter(start=self.start)

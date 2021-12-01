@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta, timezone
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -7,7 +8,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from rdv.forms import RdvForm, DoctorForm
-from rdv.models import Doctor
+from rdv.models import Doctor, Rdv, Patient
+import pytz
+
 
 
 @login_required()
@@ -28,11 +31,13 @@ def index(request):
 def appointment(request, doctor_id):
     doctor = Doctor.objects.get(id=doctor_id)
     rdv_duration = doctor.type_rdv.duration
-
+    utc = pytz.UTC
     if request.method == 'POST':
         form = RdvForm(request.POST)
         if form.is_valid():
-            form.save()
+            start = form.cleaned_data['start']
+            end = start + timedelta(minutes=rdv_duration)
+            Rdv.objects.create(doctor=doctor, patient=request.user.patient, start=start, end=end)
             return redirect('approved')
     else:
         form = RdvForm()
