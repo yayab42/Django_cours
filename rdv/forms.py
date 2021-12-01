@@ -1,5 +1,5 @@
-from django.forms import ModelForm, DateInput
-from rdv.models import Rdv
+from django.forms import ModelForm
+from rdv.models import Rdv, Person
 from django import forms
 
 
@@ -12,3 +12,6 @@ class RdvForm(ModelForm):
         fields = ['start', 'doctor']
         exclude = ['type']
 
+
+class DoctorForm(forms.Form):
+    user = forms.ModelChoiceField(queryset=Person.objects.filter(category='MEDECIN'), label="Praticien ")

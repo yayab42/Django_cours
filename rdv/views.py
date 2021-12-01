@@ -6,11 +6,25 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from rdv.forms import RdvForm
+from rdv.forms import RdvForm, DoctorForm
 
 
 @login_required()
 def index(request):
+    if request.method == 'POST':
+        form = DoctorForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data.get('user')
+            print(user)
+        return redirect(f'appointment/{user.id}')
+    else:
+        form = DoctorForm()
+    context = {'form': form}
+    return render(request, 'rdv/index.html', context)
+
+
+@login_required()
+def appointment(request, doctor_id):
     if request.method == 'POST':
         form = RdvForm(request.POST)
         if form.is_valid():
@@ -19,7 +33,7 @@ def index(request):
     else:
         form = RdvForm()
     context = {'form': form}
-    return render(request, 'rdv/index.html', context)
+    return render(request, 'rdv/appointment.html', context)
 
 
 class LoginView(TemplateView):

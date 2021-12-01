@@ -5,9 +5,10 @@
 
 <div class="container">
     <h1 class="text-capitalize">Bonjour {{request.user.username}} </h1>
-    <p>Choisissez votre medecin ?</p>
 
-    <form action="{% url 'index' %}" method="post">
+    <p>Vous allez ici pouvoir prendre rendez-vous pour être vaccined contre la COVID-19</p>
+
+    <form action="{% url 'appointment' %}" method="post">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="form-control">

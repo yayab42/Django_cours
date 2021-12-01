@@ -13,6 +13,7 @@ button{
     padding: 5px 10px;
     background-color: #45D0DE;
     color: white;
+    border : solid 3px #45D0DE;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -20,8 +21,8 @@ button{
 button:hover{
     padding: 5px 10px;
     background-color: white;
-    color: green;
-    border: solid 3px green;
+    color: #45D0DE;
+    border: solid 3px #45D0DE;
     border-radius: 5px;
 }
 
