@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from rdv.forms import RdvForm, DoctorForm
+from rdv.models import Doctor
 
 
 @login_required()
@@ -25,6 +26,9 @@ def index(request):
 
 @login_required()
 def appointment(request, doctor_id):
+    doctor = Doctor.objects.get(id=doctor_id)
+    rdv_duration = doctor.type_rdv.duration
+
     if request.method == 'POST':
         form = RdvForm(request.POST)
         if form.is_valid():
@@ -32,7 +36,7 @@ def appointment(request, doctor_id):
             return redirect('approved')
     else:
         form = RdvForm()
-    context = {'form': form}
+    context = {'form': form, 'doctor_id': doctor_id}
     return render(request, 'rdv/appointment.html', context)
 
 

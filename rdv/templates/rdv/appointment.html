@@ -8,7 +8,7 @@
 
     <p>Vous allez ici pouvoir prendre rendez-vous pour être vaccined contre la COVID-19</p>
 
-    <form action="{% url 'appointment' %}" method="post">
+    <form action="{% url 'appointment' doctor_id %}" method="post">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="form-control">

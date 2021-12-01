@@ -18,19 +18,6 @@ from datetime import datetime
 #                                 default="Patient")
 
 
-class Patient(models.Model):
-    def __str__(self):
-        return self.user.username
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
-class Doctor(models.Model):
-    def __str__(self):
-        return self.user.username
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-
 class TypeRdv(models.Model):
     TYPE_CHOICES = (
         ("RDV SIMPLE", "Rdv simple"),
@@ -49,6 +36,20 @@ class TypeRdv(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+
+class Patient(models.Model):
+    def __str__(self):
+        return self.user.username
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+
+class Doctor(models.Model):
+    def __str__(self):
+        return self.user.username
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    type_rdv = models.ForeignKey(TypeRdv, null=True, on_delete=models.CASCADE, related_name='type_rdv')
 
 
 class Rdv(models.Model):
@@ -76,10 +77,10 @@ class Rdv(models.Model):
         events = Rdv.objects.filter(start=self.start)
         if events.exists():
             for event in events:
-                if self.check_overlap(event.start_time, event.end_time, self.start, self.end):
+                if self.check_overlap(event.start, event.end, self.start, self.end):
                     raise ValidationError(
-                        'Il y a déjà un rendez vous à : ' + str(event.day) + ', ' + str(
-                            event.start_time) + '-' + str(event.end_time))
+                        'Il y a déjà un rendez vous à : ' + str(event.start) + ', ' + str(
+                            event.start) + '-' + str(event.end))
 
     def __str__(self):
         return str(self.start)
