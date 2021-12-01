@@ -1,21 +1,34 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
-class Person(models.Model):
+# class Person(models.Model):
+#     def __str__(self):
+#         return self.user.username
+#
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     CATEGORY_CHOICES = (
+#         ("MEDECIN", "Medecin"),
+#         ("PATIENT", "Patient")
+#     )
+#     category = models.CharField(max_length=8,
+#                                 choices=CATEGORY_CHOICES,
+#                                 default="Patient")
+
+
+class Patient(models.Model):
     def __str__(self):
         return self.user.username
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    CATEGORY_CHOICES = (
-        ("MEDECIN", "Medecin"),
-        ("PATIENT", "Patient")
-    )
-    category = models.CharField(max_length=8,
-                                choices=CATEGORY_CHOICES,
-                                default="Patient")
+
+
+class Doctor(models.Model):
+    def __str__(self):
+        return self.user.username
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class TypeRdv(models.Model):
@@ -40,8 +53,8 @@ class TypeRdv(models.Model):
 
 class Rdv(models.Model):
     type = models.ForeignKey(TypeRdv, null=True, on_delete=models.CASCADE, related_name='type')
-    doctor = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='doctor')
-    patient = models.ForeignKey(Person, null=True, on_delete=models.CASCADE, related_name='patient')
+    doctor = models.ForeignKey(Doctor, null=True, on_delete=models.CASCADE, related_name='doctor')
+    patient = models.ForeignKey(Patient, null=True, on_delete=models.CASCADE, related_name='patient')
     start = models.DateTimeField(default=datetime.now, help_text="Jour et heure du rendez-vous")
     end = models.DateTimeField(default=datetime.now, help_text="Fin du rendez-vous")
 

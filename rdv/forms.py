@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from rdv.models import Rdv, Person
+from rdv.models import Rdv, Doctor, Patient
 from django import forms
 
 
@@ -14,4 +14,5 @@ class RdvForm(ModelForm):
 
 
 class DoctorForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=Person.objects.filter(category='MEDECIN'), label="Praticien ")
+    user = forms.ModelChoiceField(queryset=Doctor.objects.all(), label="Praticien")
+
