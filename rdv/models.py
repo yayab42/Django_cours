@@ -5,20 +5,6 @@ from datetime import datetime
 import pytz
 
 
-# class Person(models.Model):
-#     def __str__(self):
-#         return self.user.username
-#
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     CATEGORY_CHOICES = (
-#         ("MEDECIN", "Medecin"),
-#         ("PATIENT", "Patient")
-#     )
-#     category = models.CharField(max_length=8,
-#                                 choices=CATEGORY_CHOICES,
-#                                 default="Patient")
-
-
 class TypeRdv(models.Model):
     TYPE_CHOICES = (
         ("RDV SIMPLE", "Rdv simple"),
@@ -71,10 +57,6 @@ class Rdv(models.Model):
         return overlap
 
     def clean(self):
-        utc = pytz.UTC
-        if utc.localize(self.end) <= self.start:
-            raise ValidationError("L'heure de début doit être inférieure à l'heure de fin")
-
         events = Rdv.objects.filter(start=self.start)
         if events.exists():
             for event in events:

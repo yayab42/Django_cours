@@ -10,12 +10,21 @@
 
     <form action="{% url 'appointment' doctor_id %}" method="post">
                 {% csrf_token %}
-                {% for field in form %}
-                    <div class="form-control">
-                        {{field.label_tag}}
-                        {{field}}
-                    </div>
-                {% endfor %}
+                    {% for field in form %}
+            {{form}}
+            {% endfor %}
+
+        <label for="schedule-select">Choissisez un créneau :</label>
+        <select name="schedule" id="schedule-select">
+            <option value="">--Please choose an option--</option>
+            {% for field in matin %}
+                <option value="{{field}}">{{field}}</option>
+            {% endfor %}
+            {% for field in aprem %}
+                <option value="{{field}}">{{field}}</option>
+            {% endfor %}
+        </select>
+
         <button type="submit" style="width:100px;">ENVOYER</button>
     </form>
 

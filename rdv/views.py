@@ -1,8 +1,10 @@
 import datetime
 from datetime import timedelta, datetime
 
+import pytz
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -34,23 +36,23 @@ def appointment(request, doctor_id):
     heures_aprem = today.replace(hour=14, minute=0, second=0, microsecond=0)
     heures_matin = today.replace(hour=8, minute=0, second=0, microsecond=0)
     while heures_matin < today.replace(hour=12, minute=0, second=0, microsecond=0):
-        matin.append(heures_matin)
+        matin.append(pytz.utc.localize(heures_matin).strftime('%b %d %Y %I:%M %p'))
         heures_matin += timedelta(minutes=rdv_duration)
-    print(matin)
     while heures_aprem < today.replace(hour=18, minute=0, second=0, microsecond=0):
-        aprem.append(heures_aprem)
+        aprem.append(pytz.utc.localize(heures_aprem).strftime('%b %d %Y %I:%M %p'))
         heures_aprem += timedelta(minutes=rdv_duration)
-    print(aprem)
     if request.method == 'POST':
         form = RdvForm(request.POST)
         if form.is_valid():
-            start = form.cleaned_data['start']
+            start = datetime.strptime(request.POST['schedule'], '%b %d %Y %I:%M %p')
             end = start + timedelta(minutes=rdv_duration)
             Rdv.objects.create(doctor=doctor, patient=request.user.patient, start=start, end=end)
+            if end <= start:
+                raise ValidationError("L'heure de début doit être inférieure à l'heure de fin")
             return redirect('approved')
     else:
         form = RdvForm()
-    context = {'form': form, 'doctor_id': doctor_id}
+    context = {'form': form, 'doctor_id': doctor_id, 'matin': matin, 'aprem': aprem}
     return render(request, 'rdv/appointment.html', context)
 
 
