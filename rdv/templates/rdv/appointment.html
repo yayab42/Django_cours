@@ -32,4 +32,23 @@
 </div>
 
 
+<script>
+
+        console.log("check for web socket");
+        let socket = new WebSocket('{{ web_socket }}');
+
+        socket.onmessage = function (event) {
+                console.log('connection web socket opened');
+                let message = JSON.parse(event.data);
+                socket.send(JSON.stringify({'answer': true}));
+                console.log(message);
+                url = message.last_start_booked;
+                socket.close()
+        };
+
+        socket.onclose = function () {
+            console.log('connection web-socket closed');
+        };
+
+</script>
 {% endblock content %}

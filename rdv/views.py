@@ -28,6 +28,8 @@ def index(request):
 
 @login_required()
 def appointment(request, doctor_id):
+    web_socket = 'ws://' + request.get_host() +'/socket/'
+    print(web_socket)
     doctor = Doctor.objects.get(id=doctor_id)
     rdv_duration = doctor.type_rdv.duration
     today = datetime.today()
@@ -52,7 +54,7 @@ def appointment(request, doctor_id):
             return redirect('approved')
     else:
         form = RdvForm()
-    context = {'form': form, 'doctor_id': doctor_id, 'matin': matin, 'aprem': aprem}
+    context = {'form': form, 'doctor_id': doctor_id, 'matin': matin, 'aprem': aprem, 'web_socket': web_socket}
     return render(request, 'rdv/appointment.html', context)
 
 
