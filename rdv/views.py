@@ -1,16 +1,13 @@
 import datetime
-from datetime import timedelta, timezone, time, datetime
-from time import strftime, strptime
+from datetime import timedelta, datetime
 
-from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from rdv.forms import RdvForm, DoctorForm
-from rdv.models import Doctor, Rdv, Patient
-import pytz
+from rdv.models import Doctor, Rdv
 
 
 @login_required()
@@ -31,18 +28,18 @@ def index(request):
 def appointment(request, doctor_id):
     doctor = Doctor.objects.get(id=doctor_id)
     rdv_duration = doctor.type_rdv.duration
-    utc = pytz.UTC
+    today = datetime.today()
     matin = []
     aprem = []
-    heures = datetime.strptime('14:00:00', '%H:%M:%S')
-    heure = datetime.strptime('08:00:00', '%H:%M:%S')
-    while heure < datetime.strptime('12:00:00', '%H:%M:%S'):
-        matin.append(heure)
-        heure += timedelta(minutes=rdv_duration)
+    heures_aprem = today.replace(hour=14, minute=0, second=0, microsecond=0)
+    heures_matin = today.replace(hour=8, minute=0, second=0, microsecond=0)
+    while heures_matin < today.replace(hour=12, minute=0, second=0, microsecond=0):
+        matin.append(heures_matin)
+        heures_matin += timedelta(minutes=rdv_duration)
     print(matin)
-    while heures < datetime.strptime('18:00:00', '%H:%M:%S'):
-        aprem.append(heures)
-        heures += timedelta(minutes=rdv_duration)
+    while heures_aprem < today.replace(hour=18, minute=0, second=0, microsecond=0):
+        aprem.append(heures_aprem)
+        heures_aprem += timedelta(minutes=rdv_duration)
     print(aprem)
     if request.method == 'POST':
         form = RdvForm(request.POST)
