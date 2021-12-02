@@ -1,5 +1,6 @@
 import datetime
-from datetime import timedelta, timezone
+from datetime import timedelta, timezone, time, datetime
+from time import strftime, strptime
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -10,7 +11,6 @@ from django.views.generic import TemplateView
 from rdv.forms import RdvForm, DoctorForm
 from rdv.models import Doctor, Rdv, Patient
 import pytz
-
 
 
 @login_required()
@@ -32,6 +32,18 @@ def appointment(request, doctor_id):
     doctor = Doctor.objects.get(id=doctor_id)
     rdv_duration = doctor.type_rdv.duration
     utc = pytz.UTC
+    matin = []
+    aprem = []
+    heures = datetime.strptime('14:00:00', '%H:%M:%S')
+    heure = datetime.strptime('08:00:00', '%H:%M:%S')
+    while heure < datetime.strptime('12:00:00', '%H:%M:%S'):
+        matin.append(heure)
+        heure += timedelta(minutes=rdv_duration)
+    print(matin)
+    while heures < datetime.strptime('18:00:00', '%H:%M:%S'):
+        aprem.append(heures)
+        heures += timedelta(minutes=rdv_duration)
+    print(aprem)
     if request.method == 'POST':
         form = RdvForm(request.POST)
         if form.is_valid():

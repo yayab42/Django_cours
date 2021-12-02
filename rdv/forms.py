@@ -5,7 +5,7 @@ from django import forms
 
 # Create the form class.
 class RdvForm(ModelForm):
-    date: forms.DateTimeField(widget=forms.DateTimeInput)
+    start: forms.DateTimeField(input_formats=["%d %b %Y %H:%M:%S %Z"])
 
     class Meta:
         model = Rdv
@@ -15,4 +15,3 @@ class RdvForm(ModelForm):
 
 class DoctorForm(forms.Form):
     user = forms.ModelChoiceField(queryset=Doctor.objects.all(), label="Praticien")
-
