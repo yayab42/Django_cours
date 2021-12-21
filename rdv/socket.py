@@ -13,9 +13,7 @@ async def send_list(socket):
     :return:
     """
     await socket.accept()
-
-    get_number_rdv = sync_to_async(_get_number_rdv, thread_sensitive=True)
-    number = await get_number_rdv()
+    await socket.send_text('Coucou petite chaussette')
     while True:
         try:
             get_number_rdv = sync_to_async(_get_number_rdv, thread_sensitive=True)
